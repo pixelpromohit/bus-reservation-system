@@ -1,0 +1,2 @@
+DB_NAME = "bus_reservation.db"
+OPERATOR_TABLE = "Operators"
