@@ -35,8 +35,7 @@ def create_run_table():
                 available_seats TEXT NOT NULL,
                 PRIMARY KEY(bus_id,running_date))
                 """
-    
-    print(query)
+
     cursor.execute(query)
 
 if __name__ == '__main__':
