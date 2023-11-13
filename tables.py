@@ -27,6 +27,18 @@ def create_route_table():
 
     cursor.execute(query)
 
+
+def create_run_table():
+    query = f"""CREATE TABLE IF NOT EXISTS {RUN_TABLE}(
+                bus_id INTEGER,
+                running_date TEXT NOT NULL,
+                available_seats TEXT NOT NULL,
+                PRIMARY KEY(bus_id,running_date))
+                """
+
+    cursor.execute(query)
+
 if __name__ == '__main__':
     create_operator_table()
     create_route_table()
+    create_run_table()
