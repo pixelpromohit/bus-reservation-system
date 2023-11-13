@@ -2,6 +2,7 @@ import sqlite3
 
 from constants import *
 
+
 conn = sqlite3.connect(DB_NAME)
 cursor = conn.cursor()
 
@@ -17,5 +18,15 @@ def create_operator_table():
 
     cursor.execute(query)
 
+def create_route_table():
+    query = f"""CREATE TABLE IF NOT EXISTS {ROUTE_TABLE}(
+                route_id INTEGER PRIMARY KEY,
+                fromStation TEXT NOT NULL,
+                toStation TEXT NOT NULL)
+                """
+
+    cursor.execute(query)
+
 if __name__ == '__main__':
     create_operator_table()
+    create_route_table()
