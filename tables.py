@@ -7,6 +7,11 @@ conn = sqlite3.connect(DB_NAME)
 cursor = conn.cursor()
 
 
+                ################################
+                # Begin Add Bus Details Tables #
+                ################################
+
+
 def create_operator_table():
     query = f"""CREATE TABLE IF NOT EXISTS {OPERATOR_TABLE}(
                 operator_id INTEGER PRIMARY KEY,
@@ -54,8 +59,15 @@ def create_bus_table():
     cursor.execute(query)
 
 
-if __name__ == '__main__':
+#####################################################################################################
+
+
+def create_all_tables():
     create_operator_table()
     create_route_table()
     create_run_table()
     create_bus_table()
+
+
+if __name__ == '__main__':
+   create_all_tables()
