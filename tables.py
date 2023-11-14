@@ -145,6 +145,31 @@ def create_bus_table():
     cursor.execute(query)
 
 
+def insert_into_bus_table(bus_id, operator_id, route_id, bus_type, capacity, fare):
+    try:
+        query = f""" INSERT INTO {BUS_TABLE}(bus_id , operator_id , route_id , bus_type , capacity , fare)
+                VALUES(? , ? , ? , ? , ? , ?)"""
+
+        cursor.execute(query, (bus_id, operator_id, route_id, bus_type, capacity, fare))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"An error occured = {e}")
+        return False
+
+
+def edit_into_bus_table(bus_id, operator_id, route_id, bus_type, capacity, fare):
+    try:
+        query = f""" UPDATE {BUS_TABLE} SET operator_id=? , route_id=? , bus_type=? , capacity=? , fare=? WHERE bus_id=?"""
+
+        cursor.execute(query, (operator_id, route_id, bus_type, capacity, fare, bus_id))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"An error occured = {e}")
+        return False
+
+
 #####################################################################################################
 
 
@@ -157,16 +182,19 @@ def create_all_tables():
 
 if __name__ == "__main__":
     create_all_tables()
-    success = add_into_operator_table(
-        5, "rohit", "pune", "8087900440", "teamrohit@gmail.com"
-    )
-    edit_into_operator_table(
-        88, "mohit ramchandani", "mumbai", "8087900447", "gfg@gmail.com"
-    )
-    add_into_route_table(1, "guna", "bhopal")
-    add_into_route_table(1, "guna", "pune")
-    add_into_route_table(2, "guna", "mumbai")
-    delete_from_route_table(1, "guna", "bhopal")
+    # success = add_into_operator_table(
+    #     5, "rohit", "pune", "8087900440", "teamrohit@gmail.com"
+    # )
+    # edit_into_operator_table(
+    #     88, "mohit ramchandani", "mumbai", "8087900447", "gfg@gmail.com"
+    # )
+    # add_into_route_table(1, "guna", "bhopal")
+    # add_into_route_table(1, "guna", "pune")
+    # add_into_route_table(2, "guna", "mumbai")
+    # delete_from_route_table(1, "guna", "bhopal")
 
-    insert_into_run_table(2, "3/7/2003", "4/20")
-    delete_from_run_table(3, "3/7/2003", "4/20")
+    # insert_into_run_table(2, "3/7/2003", "4/20")
+    # delete_from_run_table(3, "3/7/2003", "4/20")
+
+    insert_into_bus_table(4, 10, 3, 2, 4, 1000)
+# edit_into_bus_table(1 , 3 , 3 , 4 , 3, 200)
