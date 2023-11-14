@@ -84,10 +84,10 @@ def add_into_route_table(route_id, fromStation, toStation):
         return False
 
 
-def edit_into_route_table(route_id , fromStation , toStation):
+def delete_from_route_table(route_id, fromStation, toStation):
     try:
-        query = f""" UPDATE {ROUTE_TABLE} set fromStation=? , toStation=? where route_id = ? """
-        cursor.execute(query , (fromStation , toStation , route_id))
+        query = f"""DELETE FROM {ROUTE_TABLE} WHERE route_id = ?"""
+        cursor.execute(query, (route_id,))
         conn.commit()
         return True
     except Exception as e:
@@ -104,6 +104,30 @@ def create_run_table():
                 """
 
     cursor.execute(query)
+
+
+def insert_into_run_table(bus_id, running_date, available_seats):
+    try:
+        query = f""" INSERT INTO {RUN_TABLE}(bus_id , running_date , available_seats)
+               VALUES(? , ? , ?)"""
+
+        cursor.execute(query, (bus_id, running_date, available_seats))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"An error  occured = {e}")
+        return False
+
+
+def delete_from_run_table(bus_id, runnning_date, available_seats):
+    try:
+        query = f""" DELETE FROM {RUN_TABLE} WHERE bus_id = ?"""
+        cursor.execute(query, (bus_id,))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"An error occured = {e}")
+        return False
 
 
 def create_bus_table():
@@ -142,4 +166,7 @@ if __name__ == "__main__":
     add_into_route_table(1, "guna", "bhopal")
     add_into_route_table(1, "guna", "pune")
     add_into_route_table(2, "guna", "mumbai")
-    edit_into_route_table(2 , "guna" , "kalyan")
+    delete_from_route_table(1, "guna", "bhopal")
+
+    insert_into_run_table(2, "3/7/2003", "4/20")
+    delete_from_run_table(3, "3/7/2003", "4/20")
