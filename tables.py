@@ -7,9 +7,9 @@ conn = sqlite3.connect(DB_NAME)
 cursor = conn.cursor()
 
 
-                ################################
-                # Begin Add Bus Details Tables #
-                ################################
+################################
+# Begin Add Bus Details Tables #
+################################
 
 
 def create_operator_table():
@@ -24,7 +24,7 @@ def create_operator_table():
     cursor.execute(query)
 
 
-def add_into_operator_table(operator_id , name , address , phone , email):
+def add_into_operator_table(operator_id, name, address, phone, email):
     # check if operator_id already exists
     # exists_query  = f"""SELECT *FROM {OPERATOR_TABLE} WHERE operator_id=?"""
     # exists = cursor.execute(exists_query, [(operator_id)])
@@ -36,7 +36,7 @@ def add_into_operator_table(operator_id , name , address , phone , email):
         query = f"""INSERT INTO {OPERATOR_TABLE}(operator_id , name , address , phone , email)
                     VALUES(? , ? , ? , ? , ?)
                     """
-        cursor.execute(query , (operator_id , name , address , phone , email))
+        cursor.execute(query, (operator_id, name, address, phone, email))
         conn.commit()
         return True
     except Exception as e:
@@ -44,16 +44,16 @@ def add_into_operator_table(operator_id , name , address , phone , email):
         return False
 
 
-def edit_into_operator_table(operator_id , name , address , phone , email):
-    exists_query  = f"""SELECT *FROM {OPERATOR_TABLE} WHERE operator_id=?"""
+def edit_into_operator_table(operator_id, name, address, phone, email):
+    exists_query = f"""SELECT *FROM {OPERATOR_TABLE} WHERE operator_id=?"""
     exists = cursor.execute(exists_query, [(operator_id)])
     if cursor.fetchone() is None:
         print(f"operator_id = {operator_id} does not exists in the table")
         return False
 
     try:
-        query  = f""" UPDATE {OPERATOR_TABLE} SET name = ? , address = ? , phone = ? , email = ? WHERE operator_id = ?"""
-        cursor.execute(query , (name , address , phone , email , operator_id))
+        query = f""" UPDATE {OPERATOR_TABLE} SET name = ? , address = ? , phone = ? , email = ? WHERE operator_id = ?"""
+        cursor.execute(query, (name, address, phone, email, operator_id))
         conn.commit()
         return True
     except Exception as e:
@@ -69,6 +69,30 @@ def create_route_table():
                 """
 
     cursor.execute(query)
+
+
+def add_into_route_table(route_id, fromStation, toStation):
+    try:
+        query = f""" INSERT INTO {ROUTE_TABLE}(route_id , fromStation ,toStation)
+                VALUES(? , ? , ?)"""
+
+        cursor.execute(query, (route_id, fromStation, toStation))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"An error occured = {e}")
+        return False
+
+
+def edit_into_route_table(route_id , fromStation , toStation):
+    try:
+        query = f""" UPDATE {ROUTE_TABLE} set fromStation=? , toStation=? where route_id = ? """
+        cursor.execute(query , (fromStation , toStation , route_id))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"An error occured = {e}")
+        return False
 
 
 def create_run_table():
@@ -107,7 +131,15 @@ def create_all_tables():
     create_bus_table()
 
 
-if __name__ == '__main__':
-   create_all_tables()
-   success = add_into_operator_table(5 , 'rohit' , 'pune' , '8087900440' , 'teamrohit@gmail.com')
-   edit_into_operator_table(88 , 'mohit ramchandani' , 'mumbai' , '8087900447' , 'gfg@gmail.com')
+if __name__ == "__main__":
+    create_all_tables()
+    success = add_into_operator_table(
+        5, "rohit", "pune", "8087900440", "teamrohit@gmail.com"
+    )
+    edit_into_operator_table(
+        88, "mohit ramchandani", "mumbai", "8087900447", "gfg@gmail.com"
+    )
+    add_into_route_table(1, "guna", "bhopal")
+    add_into_route_table(1, "guna", "pune")
+    add_into_route_table(2, "guna", "mumbai")
+    edit_into_route_table(2 , "guna" , "kalyan")
