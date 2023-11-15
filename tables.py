@@ -4,6 +4,7 @@ from constants import *
 
 
 conn = sqlite3.connect(DB_NAME)
+conn.execute("PRAGMA foreign_keys = 1")
 cursor = conn.cursor()
 
 
@@ -25,13 +26,6 @@ def create_operator_table():
 
 
 def add_into_operator_table(operator_id, name, address, phone, email):
-    # check if operator_id already exists
-    # exists_query  = f"""SELECT *FROM {OPERATOR_TABLE} WHERE operator_id=?"""
-    # exists = cursor.execute(exists_query, [(operator_id)])
-    # if cursor.fetchone() != None:
-    #     print(f"{operator_id} already exists in the table")
-    #     return False
-
     try:
         query = f"""INSERT INTO {OPERATOR_TABLE}(operator_id , name , address , phone , email)
                     VALUES(? , ? , ? , ? , ?)
@@ -52,12 +46,12 @@ def edit_into_operator_table(operator_id, name, address, phone, email):
         return False
 
     try:
-        query = f""" UPDATE {OPERATOR_TABLE} SET name = ? , address = ? , phone = ? , email = ? WHERE operator_id = ?"""
+        query = f"""UPDATE {OPERATOR_TABLE} SET name = ? , address = ? , phone = ? , email = ? WHERE operator_id = ?"""
         cursor.execute(query, (name, address, phone, email, operator_id))
         conn.commit()
         return True
     except Exception as e:
-        print(f"An error occured while editing = {e}")
+        print(f"An error occured while editing operator_table. Error= {e}")
         return False
 
 
@@ -73,7 +67,7 @@ def create_route_table():
 
 def add_into_route_table(route_id, fromStation, toStation):
     try:
-        query = f""" INSERT INTO {ROUTE_TABLE}(route_id , fromStation ,toStation)
+        query = f"""INSERT INTO {ROUTE_TABLE}(route_id , fromStation ,toStation)
                 VALUES(? , ? , ?)"""
 
         cursor.execute(query, (route_id, fromStation, toStation))
@@ -108,7 +102,7 @@ def create_run_table():
 
 def insert_into_run_table(bus_id, running_date, available_seats):
     try:
-        query = f""" INSERT INTO {RUN_TABLE}(bus_id , running_date , available_seats)
+        query = f"""INSERT INTO {RUN_TABLE}(bus_id , running_date , available_seats)
                VALUES(? , ? , ?)"""
 
         cursor.execute(query, (bus_id, running_date, available_seats))
@@ -121,7 +115,7 @@ def insert_into_run_table(bus_id, running_date, available_seats):
 
 def delete_from_run_table(bus_id, runnning_date, available_seats):
     try:
-        query = f""" DELETE FROM {RUN_TABLE} WHERE bus_id = ?"""
+        query = f"""DELETE FROM {RUN_TABLE} WHERE bus_id = ?"""
         cursor.execute(query, (bus_id,))
         conn.commit()
         return True
@@ -147,7 +141,7 @@ def create_bus_table():
 
 def insert_into_bus_table(bus_id, operator_id, route_id, bus_type, capacity, fare):
     try:
-        query = f""" INSERT INTO {BUS_TABLE}(bus_id , operator_id , route_id , bus_type , capacity , fare)
+        query = f"""INSERT INTO {BUS_TABLE}(bus_id , operator_id , route_id , bus_type , capacity , fare)
                 VALUES(? , ? , ? , ? , ? , ?)"""
 
         cursor.execute(query, (bus_id, operator_id, route_id, bus_type, capacity, fare))
@@ -160,7 +154,7 @@ def insert_into_bus_table(bus_id, operator_id, route_id, bus_type, capacity, far
 
 def edit_into_bus_table(bus_id, operator_id, route_id, bus_type, capacity, fare):
     try:
-        query = f""" UPDATE {BUS_TABLE} SET operator_id=? , route_id=? , bus_type=? , capacity=? , fare=? WHERE bus_id=?"""
+        query = f"""UPDATE {BUS_TABLE} SET operator_id=? , route_id=? , bus_type=? , capacity=? , fare=? WHERE bus_id=?"""
 
         cursor.execute(query, (operator_id, route_id, bus_type, capacity, fare, bus_id))
         conn.commit()
@@ -196,5 +190,7 @@ if __name__ == "__main__":
     # insert_into_run_table(2, "3/7/2003", "4/20")
     # delete_from_run_table(3, "3/7/2003", "4/20")
 
-    insert_into_bus_table(4, 10, 3, 2, 4, 1000)
+    insert_into_bus_table(
+        bus_id=6, operator_id=10, route_id=3, bus_type=2, capacity=4, fare=1000
+    )
 # edit_into_bus_table(1 , 3 , 3 , 4 , 3, 200)
